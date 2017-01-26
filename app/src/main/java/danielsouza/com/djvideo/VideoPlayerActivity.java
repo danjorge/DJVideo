@@ -1,11 +1,12 @@
 package danielsouza.com.djvideo;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +15,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -42,6 +46,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
             new MediaController(this);
         }
 
+        Intent intent = new Intent();
+        File file = (File) intent.getSerializableExtra("file");
+
         video = (VideoView) findViewById(R.id.video_view);
         textProgress = (TextView) findViewById(R.id.textCountId);
         textDuration = (TextView) findViewById(R.id.textDurationId);
@@ -58,7 +65,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         try {
             video.setMediaController(mediaController);
-            video.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.homem_aranha));
+            if (file != null) {
+                video.setVideoURI(Uri.parse(file.getAbsolutePath()));
+            }
+            //video.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.homem_aranha));
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
