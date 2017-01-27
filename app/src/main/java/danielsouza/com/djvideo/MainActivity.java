@@ -29,9 +29,18 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/KumaComico/Harry Potter Aula Fuleragi (Kuma Cômico).mp4";
+//        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/KumaComico/Harry Potter Aula Fuleragi (Kuma Cômico).mp4";
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/";
         final File file = new File(path);
-        listTextVideos.add(file.getName());
+        File files[] = null;
+        if(file.isDirectory()){
+            files = file.listFiles();
+        }
+        if (files != null) {
+            for (File f : files) {
+                listTextVideos.add(f.getName());
+            }
+        }
 
         ListViewVideosAdapter listViewVideosAdapter = new ListViewVideosAdapter(this, listTextVideos);
         listViewVideos.setAdapter(listViewVideosAdapter);
@@ -41,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-                intent.putExtra("file", file);
+                intent.putExtra("filepath", file.getAbsolutePath());
                 startActivity(intent);
             }
         });
