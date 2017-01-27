@@ -18,12 +18,12 @@ public class MainActivity extends AppCompatActivity {
     private File[] files;
     private File file;
 
-    private boolean hasPermission;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setTitle("DCIM");
 
         ListView listViewVideos = (ListView) findViewById(R.id.listViewVideosId);
         List<String> listTextVideos = new ArrayList<>();

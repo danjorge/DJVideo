@@ -1,8 +1,8 @@
 package danielsouza.com.djvideo;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -21,6 +21,7 @@ public class Directory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directory);
 
+
         Permissions.requestRWPermission(this);
 
         ListView listViewFilesDirectory = (ListView) findViewById(R.id.listViewDirectoryId);
@@ -30,6 +31,10 @@ public class Directory extends AppCompatActivity {
         String directoryPath = "";
         if(Permissions.hasRWPermission(getApplicationContext())){
             directoryPath = (String) intent.getExtras().get("directoryPath");
+        }
+
+        if (directoryPath != null) {
+            setTitle(directoryPath.substring(directoryPath.lastIndexOf("/")).replace("/", ""));
         }
 
         file = null;
