@@ -1,44 +1,25 @@
 package danielsouza.com.djvideo;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.Permission;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.jar.Manifest;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
@@ -55,24 +36,25 @@ public class VideoPlayerActivity extends AppCompatActivity {
     private ImageButton buttonPlay;
     private ImageButton buttonNext;
 
-    public static final int PERMISSION_REQUEST_ID = 0x01;
+    private FrameLayout buttonsFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
 
-        requestRWPermission(this);
+        buttonsFrameLayout = (FrameLayout) findViewById(R.id.buttonsFrameLayoutId);
+        buttonsFrameLayout.setVisibility(FrameLayout.GONE);
 
         if (mediaController == null) {
-            new MediaController(this);
+            mediaController = new MediaController(this);
         }
+
+        Permissions.requestRWPermission(this);
 
         Intent intent = getIntent();
         String filePath = "";
-        if(hasRWPermission(this)) {
-            filePath = (String) intent.getExtras().get("filepath");
-        }
+        filePath = (String) intent.getExtras().get("filepath");
 
         video = (VideoView) findViewById(R.id.video_view);
         textProgress = (TextView) findViewById(R.id.textCountId);
@@ -175,6 +157,12 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        buttonsFrameLayout.setVisibility(FrameLayout.VISIBLE);
+        return super.onTouchEvent(event);
+    }
+
     private void updateSeekBar(){
         handler.postDelayed(updateTimeTask, 100);
     }
@@ -226,24 +214,5 @@ public class VideoPlayerActivity extends AppCompatActivity {
         });
         super.onDestroy();
 
-    }
-
-    @TargetApi(23)
-    public static boolean hasRWPermission(Context context) {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ||
-                context.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                        PackageManager.PERMISSION_GRANTED &&
-                context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                        PackageManager.PERMISSION_GRANTED);
-    }
-
-    @TargetApi(23)
-    public static void requestRWPermission(Activity activity){
-        activity.requestPermissions(
-                new String[]{
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                },
-                PERMISSION_REQUEST_ID);
     }
 }

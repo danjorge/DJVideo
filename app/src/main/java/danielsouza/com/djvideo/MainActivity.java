@@ -15,6 +15,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private File[] files;
+    private File file;
+
+    private boolean hasPermission;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,17 +34,16 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-//        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/KumaComico/Harry Potter Aula Fuleragi (Kuma Cômico).mp4";
+        Permissions.requestRWPermission(this);
+
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/";
-        final File file = new File(path);
-        File files[] = null;
+        file = new File(path);
+        files = new File[0];
         if(file.isDirectory()){
             files = file.listFiles();
         }
-        if (files != null) {
-            for (File f : files) {
-                listTextVideos.add(f.getName());
-            }
+        for (File f : files) {
+            listTextVideos.add(f.getName());
         }
 
         ListViewVideosAdapter listViewVideosAdapter = new ListViewVideosAdapter(this, listTextVideos);
@@ -49,9 +53,16 @@ public class MainActivity extends AppCompatActivity {
         listViewVideos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-                intent.putExtra("filepath", file.getAbsolutePath());
-                startActivity(intent);
+                if (files != null && files[position].isDirectory()) {
+                    Intent intent = new Intent(view.getContext(), Directory.class);
+                    intent.putExtra("directoryPath", files[position].getAbsolutePath());
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                } else {
+                    Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+                    intent.putExtra("filepath", file.getAbsolutePath());
+                    startActivity(intent);
+                }
             }
         });
     }
