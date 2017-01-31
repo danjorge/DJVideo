@@ -29,4 +29,10 @@
         android:layout_marginTop="35dp"
         android:id="@+id/progressBar5" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/corporight"
+        android:gravity="bottom|center"/>
+
 </RelativeLayout>
