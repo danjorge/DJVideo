@@ -1,4 +1,4 @@
-package danielsouza.com.djvideo;
+package danielsouza.com.djvideo.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,28 +10,29 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by daniel.souza on 27/01/2017.
- */
+import danielsouza.com.djvideo.R;
 
-public class ListViewDirectoryAdapter extends BaseAdapter {
+/**
+ * Created by daniel.souza on 25/01/2017.
+ */
+public class ListViewVideosAdapter extends BaseAdapter{
 
     private Context mContext;
-    private List<String> listFilesDirectory;
+    private List<String> listTextVideos;
 
-    public ListViewDirectoryAdapter(Context mContext, List<String> listFilesDirectory) {
+    public ListViewVideosAdapter(Context mContext, List<String> listTextVideos) {
         this.mContext = mContext;
-        this.listFilesDirectory = listFilesDirectory;
+        this.listTextVideos = listTextVideos;
     }
 
     @Override
     public int getCount() {
-        return listFilesDirectory.size();
+        return listTextVideos.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listFilesDirectory.get(position);
+        return listTextVideos.get(position);
     }
 
     @Override
@@ -43,11 +44,11 @@ public class ListViewDirectoryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.layout_row_directory_files, null);
+            convertView = layoutInflater.inflate(R.layout.layout_row_videos, null);
         }
 
-        TextView textView = (TextView) convertView.findViewById(R.id.text_list_view_directory);
-        textView.setText(listFilesDirectory.get(position));
+        TextView textView = (TextView) convertView.findViewById(R.id.text_list_view);
+        textView.setText(listTextVideos.get(position));
 
         return convertView;
     }

@@ -1,9 +1,11 @@
-package danielsouza.com.djvideo;
+package danielsouza.com.djvideo.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import danielsouza.com.djvideo.R;
 
 public class SplashActivity extends AppCompatActivity {
 

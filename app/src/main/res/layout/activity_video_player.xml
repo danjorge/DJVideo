@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@color/color_dark"
-    tools:context="danielsouza.com.djvideo.MainActivity">
+    tools:context="danielsouza.com.djvideo.activity.MainActivity">
 
     <VideoView
         android:id="@+id/video_view"

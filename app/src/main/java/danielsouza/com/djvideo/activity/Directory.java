@@ -1,4 +1,4 @@
-package danielsouza.com.djvideo;
+package danielsouza.com.djvideo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import android.widget.ListView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import danielsouza.com.djvideo.permissions.Permissions;
+import danielsouza.com.djvideo.R;
+import danielsouza.com.djvideo.adapter.ListViewDirectoryAdapter;
 
 public class Directory extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package danielsouza.com.djvideo;
+package danielsouza.com.djvideo.permissions;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

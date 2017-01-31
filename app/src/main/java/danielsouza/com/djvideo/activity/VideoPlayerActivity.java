@@ -1,4 +1,4 @@
-package danielsouza.com.djvideo;
+package danielsouza.com.djvideo.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import danielsouza.com.djvideo.permissions.Permissions;
+import danielsouza.com.djvideo.R;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
