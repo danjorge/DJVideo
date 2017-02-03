@@ -42,10 +42,7 @@ public class Directory extends AppCompatActivity {
         List<String> listFilesDirectory = new ArrayList<>();
 
         Intent intent = getIntent();
-        String directoryPath = "";
-        if(Permissions.hasRWPermission(getApplicationContext())){
-            directoryPath = (String) intent.getExtras().get("directoryPath");
-        }
+        String directoryPath = (String) intent.getExtras().get("directoryPath");
 
         if (directoryPath != null) {
             setTitle(directoryPath.substring(directoryPath.lastIndexOf("/")).replace("/", ""));

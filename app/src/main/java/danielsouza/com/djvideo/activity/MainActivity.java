@@ -2,28 +2,22 @@ package danielsouza.com.djvideo.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileSystemUtils;
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import danielsouza.com.djvideo.permissions.Permissions;
 import danielsouza.com.djvideo.R;
 import danielsouza.com.djvideo.adapter.ListViewVideosAdapter;
+import danielsouza.com.djvideo.permissions.Permissions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,10 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        navigationDrawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
         ListView listViewVideos = (ListView) findViewById(R.id.listViewVideosId);
         List<String> listTextVideos = new ArrayList<>();
@@ -57,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle(path.substring(path.lastIndexOf("/")).replace("/", ""));
         toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.color_white));
         file = new File(path);
+
         files = new File[0];
+
         if(file.isDirectory()){
             files = file.listFiles();
-        }
-        for (File f : files) {
-            listTextVideos.add(f.getName());
+            for (File f : files) {
+                listTextVideos.add(f.getName());
+            }
         }
 
         ListViewVideosAdapter listViewVideosAdapter = new ListViewVideosAdapter(this, listTextVideos);
