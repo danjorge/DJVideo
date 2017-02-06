@@ -6,7 +6,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="corporight">© 2017 Daniel Jorge ALL RIGHTS RESERVED</string>
-    <string name="text_directory">Directory</string>
+    <string name="text_directory">Directory:</string>
 
     <string-array name="environment">
         <item>DCIM</item>

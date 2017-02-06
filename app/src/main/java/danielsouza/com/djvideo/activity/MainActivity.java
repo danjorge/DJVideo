@@ -1,25 +1,27 @@
 package danielsouza.com.djvideo.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.FrameLayout;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import danielsouza.com.djvideo.R;
-import danielsouza.com.djvideo.adapter.ListViewVideosAdapter;
+import danielsouza.com.djvideo.adapter.ListViewSideMenuAdapter;
+import danielsouza.com.djvideo.entity.MenuItem;
+import danielsouza.com.djvideo.fragment.ListDirectoryFragment;
 import danielsouza.com.djvideo.permissions.Permissions;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends NavigationDrawer {
+
+    private ArrayList<MenuItem> listMenuItens = new ArrayList<>();
 
     private File[] files;
     private File file;
@@ -27,19 +29,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
-
-        ListView listViewVideos = (ListView) findViewById(R.id.listViewVideosId);
-        List<String> listTextVideos = new ArrayList<>();
-
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("DJVideos");
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        setContentView(R.layout.base_layout);
+        super.onCreateDrawer();
 
         Permissions.requestRWPermission(this);
 
@@ -53,26 +44,25 @@ public class MainActivity extends AppCompatActivity {
         if(file.isDirectory()){
             files = file.listFiles();
             for (File f : files) {
-                listTextVideos.add(f.getName());
+                listMenuItens.add( new MenuItem( f.getName() ) );
             }
         }
 
-        ListViewVideosAdapter listViewVideosAdapter = new ListViewVideosAdapter(this, listTextVideos);
-        listViewVideos.setAdapter(listViewVideosAdapter);
-        progressDialog.dismiss();
+        frameLayout = (FrameLayout) findViewById(R.id.changeable);
 
-        listViewVideos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter = new ListViewSideMenuAdapter(this, listMenuItens);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (files != null && files[position].isDirectory()) {
-                    Intent intent = new Intent(view.getContext(), Directory.class);
-                    intent.putExtra("directoryPath", files[position].getAbsolutePath());
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                } else {
-                    Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-                    intent.putExtra("filepath", file.getAbsolutePath());
-                    startActivity(intent);
+                if(files != null && files[position].isDirectory()){
+                    ListDirectoryFragment fragment = new ListDirectoryFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("directyPath", files[position].getAbsolutePath());
+                    fragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.changeable, fragment).commit();
+                    toggleMenu();
                 }
             }
         });
