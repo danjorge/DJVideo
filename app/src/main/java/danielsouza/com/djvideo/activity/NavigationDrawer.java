@@ -8,8 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import danielsouza.com.djvideo.R;
 import danielsouza.com.djvideo.adapter.ListViewSideMenuAdapter;
@@ -26,7 +31,8 @@ public class NavigationDrawer extends AppCompatActivity {
     ListViewSideMenuAdapter adapter;
     Toolbar toolbar;
     protected FrameLayout frameLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
+    ActionBarDrawerToggle mDrawerToggle;
+    MaterialSpinner spinner;
 
     protected void onCreateDrawer() {
 
@@ -42,7 +48,18 @@ public class NavigationDrawer extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close){
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
 
         drawerLayout.addDrawerListener(mDrawerToggle);
         drawerLayout.post(new Runnable() {
@@ -51,6 +68,8 @@ public class NavigationDrawer extends AppCompatActivity {
                 mDrawerToggle.syncState();
             }
         });
+
+        spinner = (MaterialSpinner) findViewById(R.id.spinner);
 
     }
 

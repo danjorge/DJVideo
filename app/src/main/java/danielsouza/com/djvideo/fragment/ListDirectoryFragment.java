@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,9 +62,14 @@ public class ListDirectoryFragment extends Fragment {
         listViewFragment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
-                intent.putExtra("filepath", finalFiles[position].getAbsolutePath());
-                startActivity(intent);
+                String fileExtension = FilenameUtils.getExtension(finalFiles[position].getAbsolutePath());
+                if(fileExtension.equalsIgnoreCase("mp4")) {
+                    Intent intent = new Intent(view.getContext(), VideoPlayerActivity.class);
+                    intent.putExtra("filepath", finalFiles[position].getAbsolutePath());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(view.getContext(), "This file is not supported", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
